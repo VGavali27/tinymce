@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import AddBlog from './AddBlog.jsx';
 import EditorDemo from './EditorDemo.jsx';
 import EditorFull from './EditorFull.jsx';
 import OptionsReference from './OptionsReference.jsx';
@@ -6,6 +7,7 @@ import PluginsReference from './PluginsReference.jsx';
 import './App.css';
 
 const TABS = [
+  { id: 'blog', label: 'Add blog' },
   { id: 'options', label: 'All options' },
   { id: 'plugins', label: 'Plugins' },
   { id: 'full', label: 'Full editor (all free plugins)' },
@@ -13,7 +15,7 @@ const TABS = [
 ];
 
 export default function App() {
-  const [tab, setTab] = useState('options');
+  const [tab, setTab] = useState('blog');
 
   return (
     <div className="app">
@@ -35,6 +37,7 @@ export default function App() {
       </nav>
 
       <main className="panel">
+        {tab === 'blog' && <AddBlog />}
         {tab === 'options' && <OptionsReference />}
         {tab === 'plugins' && <PluginsReference />}
         {tab === 'full' && <EditorFull />}

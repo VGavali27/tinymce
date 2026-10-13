@@ -8,6 +8,7 @@ No Tiny Cloud, no `apiKey`, no CDN.
 
 | Tab | Contents |
 | --- | --- |
+| **Add blog** | Blog authoring form (title, slug, category, tags, author, status, excerpt) with the editor below and a full plugin/toolbar config. |
 | **All options** | Searchable list of all **249** editor options supported by this version, grouped by category, each with a short description. |
 | **Plugins** | The **29 free Community plugins** with their options, plus a separate list of the **30 premium** features that are *not* included in the free package. |
 | **Full editor (all free plugins)** | A live editor with all 29 plugins enabled, a full toolbar, and image upload wired up (so the Upload tab appears). |

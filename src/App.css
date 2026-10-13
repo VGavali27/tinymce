@@ -189,3 +189,191 @@ code.eg {
     width: auto;
   }
 }
+
+/* --- Add blog page --- */
+.blog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.blog-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0 16px;
+}
+
+.blog-form h3 {
+  margin: 0 0 12px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #334155;
+}
+
+.blog-fields h3 {
+  grid-column: 1 / -1;
+}
+
+.field.wide {
+  grid-column: 1 / -1;
+}
+
+.field {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.field > span {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.field textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.blog-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 16px;
+}
+
+.btn {
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  color: #334155;
+  cursor: pointer;
+}
+
+.btn.primary {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+.saved-note {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0b6b3a;
+}
+
+.saved {
+  margin: 0;
+  max-height: 260px;
+  overflow: auto;
+  padding: 14px;
+  font-size: 12px;
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: 8px;
+}
+
+/* TinyMCE 8 draws toolbar separators as invisible groups:
+   .tox-toolbar__group:not(:last-of-type) { border-right: 1px solid transparent }
+   Override the colour so each "|" group shows a visible divider line. */
+.tox:not([dir=rtl]) .tox-toolbar__group:not(:last-of-type) {
+  border-right-color: #d0d7de !important;
+}
+
+.tox[dir=rtl] .tox-toolbar__group:not(:last-of-type) {
+  border-left-color: #d0d7de !important;
+}
+
+/* Tighter horizontal spacing between toolbar button groups
+   (skin default is padding: 0 11px 0 12px).
+   Note: .tox-toolbar-overlord only exists for *multiple* toolbars, so anchor
+   on .tox-toolbar. This is more specific than the skin's `.tox .tox-toolbar__group`
+   rule, so it wins without needing !important. */
+.tox .tox-toolbar .tox-toolbar__group {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/* --- Tighter toolbar rows + exact row dividers (all editors) ---
+   Skin default is a 39px row (28px button + 6px top / 5px bottom margin). We
+   tighten that to 34px and derive the divider gradient from the new row height,
+   so exactly one divider is drawn between each pair of rows. These rules are
+   global: every editor in the app gets them. */
+
+/* 1. Tighten the per-button vertical margin that defines the row height
+      (skin default: margin 6px 1px 5px 0). */
+.tox .tox-editor-header .tox-toolbar .tox-tbtn {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+/* 2. Pin the row height so the divider period below stays exact. */
+.tox .tox-editor-header .tox-toolbar__group {
+  height: 34px;
+}
+
+/* 3. Divider geometry + footer line. The gradient repeats every 34px and starts
+      34px down, so each line lands exactly on a row boundary; the drawing area
+      is offset the same 34px, which puts the pattern's final repeat on the
+      toolbar's bottom edge — outside the drawn box — so no line is painted
+      under the last row. The skin insets the gradient by 11px each side to line
+      up with the group padding; full-bleed here instead. */
+.tox .tox-editor-header .tox-toolbar {
+  background-image: repeating-linear-gradient(#d0d7de 0 1px, transparent 1px 34px);
+  background-position: 0 34px;
+  background-size: 100% calc(100% - 34px);
+  /* Footer separator: the skin only defines the menu-bar border-top, so the
+     toolbar's bottom edge would have no line at all. */
+  border-bottom: 1px solid #d0d7de;
+}
+
+/* 4. Horizontal divider between the menu bar and the toolbar — the skin draws
+      it as a transparent border-top (same invisible-colour trick as the
+      vertical group dividers) and reserves 1px of top/bottom padding
+      (skin.css:6129). Both need overriding, and that skin rule ties this
+      selector on specificity, so `!important` is used. */
+.tox .tox-menubar + .tox-toolbar,
+.tox .tox-menubar + .tox-toolbar-overlord {
+  border-top-color: #d0d7de !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Remove the header's own vertical padding. The skin sets
+   `.tox:not(.tox-tinymce-inline) .tox-editor-header { padding: 4px 0 }`
+   (skin.css:131) which reserves 4px above the menu bar and 4px below the
+   toolbar. That skin selector is also specificity (0,3,0) — a tie with
+   `.tox .tox-editor-header` — and TinyMCE injects its skin CSS after ours, so
+   the tie goes to the skin. `!important` is required to win. */
+.tox .tox-editor-header {
+  padding: 0 !important;
+}
+
+/* Make the toolbar span the full header width. `.tox-editor-header` is a
+   2-column grid (`grid-template-columns: 1fr min-content`) and the theme always
+   renders an (empty) `.tox-promotion` cell in column 2 — even with
+   promotion:false its `padding-inline: 4px 8px` reserves 12px. The toolbar is
+   auto-placed into column 1 only, so its background and borders stopped 12px
+   short of the right edge. Spanning both columns lets the row dividers and the
+   footer line reach the end. */
+.tox .tox-editor-header .tox-toolbar {
+  grid-column: 1 / -1;
+}

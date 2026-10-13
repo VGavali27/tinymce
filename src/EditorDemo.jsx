@@ -13,7 +13,7 @@ export default function EditorDemo() {
         editorRef.current = editor;
       }}
       initialValue="<p>Write your <strong>blog post</strong> here…</p>"
-      init={{ height: 500 }}
+      init={{ height: 500, promotion: false, branding: false }}
     />
   );
 }
