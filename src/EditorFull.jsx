@@ -3,7 +3,7 @@ import { Editor } from '@tinymce/tinymce-react';
 
 // Every free Community plugin bundled with the self-hosted package.
 const ALL_PLUGINS = [
-  'accordion', 'advlist', 'anchor', 'autolink', 'autoresize', 'autosave',
+  'accordion', 'advlist', 'anchor', 'autolink', 'autosave',
   'charmap', 'code', 'codesample', 'directionality', 'emoticons', 'fullscreen',
   'help', 'image', 'importcss', 'insertdatetime', 'link', 'lists', 'media',
   'nonbreaking', 'pagebreak', 'preview', 'quickbars', 'save', 'searchreplace',
@@ -20,13 +20,13 @@ const FULL_TOOLBAR =
   'searchreplace visualblocks visualchars code fullscreen preview | save help';
 
 // In-browser image upload so the Upload tab appears without a backend.
-const imagesUploadHandler = (blobInfo) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = () => reject('Upload failed');
-    reader.readAsDataURL(blobInfo.blob());
-  });
+// const imagesUploadHandler = (blobInfo) =>
+//   new Promise((resolve, reject) => {
+//     const reader = new FileReader();
+//     reader.onload = () => resolve(reader.result);
+//     reader.onerror = () => reject('Upload failed');
+//     reader.readAsDataURL(blobInfo.blob());
+//   });
 
 export default function EditorFull() {
   const editorRef = useRef(null);
@@ -43,11 +43,12 @@ export default function EditorFull() {
         '<p>Try the toolbar, the menu bar, and the image dialog (the <strong>Upload</strong> tab is now available).</p>'
       }
       init={{
-        height: 650,
+        height: 500,
         menubar: 'file edit view insert format tools table help',
         plugins: ALL_PLUGINS,
         toolbar: FULL_TOOLBAR,
-        toolbar_mode: 'sliding',
+        toolbar_mode: 'sliding',   // reveal-and-hide button (extra row)
+        // toolbar_mode: 'wrap',      // no button — every button always visible, rows wrap
 
         // Layout / behaviour
         resize: true,
@@ -66,7 +67,7 @@ export default function EditorFull() {
         image_caption: true,
         images_file_types: 'jpeg,jpg,png,gif,webp,svg',
         images_reuse_filename: true,
-        images_upload_handler: imagesUploadHandler,
+        // images_upload_handler: imagesUploadHandler,
 
         // Links
         link_default_target: '_blank',
