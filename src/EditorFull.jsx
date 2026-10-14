@@ -44,7 +44,7 @@ export default function EditorFull() {
       }
       init={{
         height: 500,
-        menubar: 'file edit view insert format tools table help',
+        // menubar: 'file edit view insert format tools table help',
         plugins: ALL_PLUGINS,
         toolbar: FULL_TOOLBAR,
         toolbar_mode: 'sliding',   // reveal-and-hide button (extra row)
@@ -112,7 +112,7 @@ export default function EditorFull() {
 
         // Quickbars
         quickbars_selection_toolbar: 'bold italic | link h2 h3 blockquote',
-        quickbars_insert_toolbar: 'quickimage quicktable',
+        quickbars_insert_toolbar: 'image quicktable',
 
         // Import CSS from the page stylesheet
         importcss_append: true,
