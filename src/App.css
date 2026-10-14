@@ -377,3 +377,19 @@ code.eg {
 .tox .tox-editor-header .tox-toolbar {
   grid-column: 1 / -1;
 }
+
+/* Menu bar on a narrow screen. Below 480px the skin pins the menubar to a
+   single sideways-scrolling line (skin.css:3275-3281 — `flex-wrap: nowrap;
+   overflow-x: auto`), which cuts the last menus off at the edge of the editor.
+   Let it wrap onto a second line instead so every menu stays reachable on a
+   phone. The skin selector is specificity (0,3,0); this one is (0,4,0), so it
+   wins even though TinyMCE injects the skin CSS after this file. `overflow-x`
+   and `overflow-y` have to be set together — a lone `visible` beside the
+   skin's `hidden` would be recomputed to `auto`. */
+@media only screen and (max-width: 480px) {
+  .tox:not(.tox-tinymce-inline) .tox-editor-header .tox-menubar {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    overflow-y: visible;
+  }
+}

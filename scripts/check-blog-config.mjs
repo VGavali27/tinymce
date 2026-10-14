@@ -1,9 +1,14 @@
-// Validates the blog editor config in src/AddBlog.jsx against the installed
-// self-hosted TinyMCE package: plugin names, option names and toolbar buttons.
+// Validates a blog editor config against the installed self-hosted TinyMCE
+// package: plugin names, option names and toolbar buttons.
+//
+// Defaults to src/AddBlog.jsx; pass a path to check another file that exports
+// the same three constants, e.g. the portable kit:
+//   node scripts/check-blog-config.mjs portable/tinymce.config.js
 import fs from 'node:fs';
 import path from 'node:path';
 
-const jsx = fs.readFileSync('src/AddBlog.jsx', 'utf8');
+const target = process.argv[2] ?? 'src/AddBlog.jsx';
+const jsx = fs.readFileSync(target, 'utf8');
 
 // --- extract string constants (handles 'a' + 'b' concatenation) ---
 const strings = (name) => {
@@ -72,6 +77,7 @@ for (const b of toolbar) {
   if (!validButtons.has(b)) problems.push(`unknown toolbar button: ${b}`);
 }
 
+console.log(`file     : ${target}`);
 console.log(`plugins  : ${plugins.length} (${plugins.join(' ')})`);
 console.log(`options  : ${optionKeys.length} (${optionKeys.join(', ')})`);
 console.log(`buttons  : ${toolbar.length}`);
