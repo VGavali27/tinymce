@@ -1,0 +1,469 @@
+.app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.topbar h1 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: #0b6b3a;
+  background: #d7f5e3;
+  border: 1px solid #9fe0bd;
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.tabs button.active {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+
+.tabs.subtle {
+  border-bottom: 0;
+  margin-bottom: 12px;
+}
+
+.tabs.subtle button {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 6px 12px;
+}
+
+.tabs.subtle button.active {
+  background: #eff6ff;
+  border-color: #2563eb;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.hint {
+  margin: 0 0 16px;
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search {
+  flex: 1;
+  padding: 9px 12px;
+  font-size: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+}
+
+.filters select {
+  padding: 9px 10px;
+  font-size: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.count {
+  font-size: 13px;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.group {
+  margin-bottom: 24px;
+}
+
+.group h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #334155;
+  margin: 0 0 8px;
+}
+
+.pill {
+  font-size: 11px;
+  font-weight: 600;
+  color: #1e40af;
+  background: #e0e7ff;
+  border-radius: 999px;
+  padding: 2px 8px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.pill.muted {
+  color: #64748b;
+  background: #f1f5f9;
+}
+
+.plugin-desc {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: #475569;
+}
+
+table.options {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+table.options td {
+  padding: 5px 10px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: top;
+}
+
+.opt-name {
+  width: 300px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  color: #0f172a;
+  white-space: nowrap;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  background: #f1f5f9;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+code.eg {
+  display: inline-block;
+  margin-left: 8px;
+  color: #0369a1;
+  background: #f0f9ff;
+}
+
+@media (max-width: 720px) {
+  .filters {
+    flex-wrap: wrap;
+  }
+  .opt-name {
+    width: auto;
+  }
+}
+
+/* --- Add blog page --- */
+.blog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.blog-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0 16px;
+}
+
+.blog-form h3 {
+  margin: 0 0 12px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #334155;
+}
+
+.blog-fields h3 {
+  grid-column: 1 / -1;
+}
+
+.field.wide {
+  grid-column: 1 / -1;
+}
+
+.field {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.field > span {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.field textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.blog-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 16px;
+}
+
+.btn {
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  color: #334155;
+  cursor: pointer;
+}
+
+.btn.primary {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+.saved-note {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0b6b3a;
+}
+
+.saved {
+  margin: 0;
+  max-height: 260px;
+  overflow: auto;
+  padding: 14px;
+  font-size: 12px;
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: 8px;
+}
+
+/* TinyMCE 8 draws toolbar separators as invisible groups:
+   .tox-toolbar__group:not(:last-of-type) { border-right: 1px solid transparent }
+   Override the colour so each "|" group shows a visible divider line. */
+.tox:not([dir=rtl]) .tox-toolbar__group:not(:last-of-type) {
+  border-right-color: #d0d7de !important;
+}
+
+.tox[dir=rtl] .tox-toolbar__group:not(:last-of-type) {
+  border-left-color: #d0d7de !important;
+}
+
+/* Tighter horizontal spacing between toolbar button groups
+   (skin default is padding: 0 11px 0 12px).
+   Note: .tox-toolbar-overlord only exists for *multiple* toolbars, so anchor
+   on .tox-toolbar. This is more specific than the skin's `.tox .tox-toolbar__group`
+   rule, so it wins without needing !important. */
+.tox .tox-toolbar .tox-toolbar__group {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/* --- Tighter toolbar rows + exact row dividers (all editors) ---
+   Skin default is a 39px row (28px button + 6px top / 5px bottom margin). We
+   tighten that to 34px and derive the divider gradient from the new row height,
+   so exactly one divider is drawn between each pair of rows. These rules are
+   global: every editor in the app gets them. */
+
+/* 1. Tighten the per-button vertical margin that defines the row height
+      (skin default: margin 6px 1px 5px 0). */
+.tox .tox-editor-header .tox-toolbar .tox-tbtn {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+/* 2. Pin the row height so the divider period below stays exact. */
+.tox .tox-editor-header .tox-toolbar__group {
+  height: 34px;
+}
+
+/* 3. Divider geometry + footer line. The gradient repeats every 34px and starts
+      34px down, so each line lands exactly on a row boundary; the drawing area
+      is offset the same 34px, which puts the pattern's final repeat on the
+      toolbar's bottom edge — outside the drawn box — so no line is painted
+      under the last row. The skin insets the gradient by 11px each side to line
+      up with the group padding; full-bleed here instead. */
+.tox .tox-editor-header .tox-toolbar {
+  background-image: repeating-linear-gradient(#d0d7de 0 1px, transparent 1px 34px);
+  background-position: 0 34px;
+  background-size: 100% calc(100% - 34px);
+  /* Footer separator: the skin only defines the menu-bar border-top, so the
+     toolbar's bottom edge would have no line at all. */
+  border-bottom: 1px solid #d0d7de;
+}
+
+/* 4. Horizontal divider between the menu bar and the toolbar — the skin draws
+      it as a transparent border-top (same invisible-colour trick as the
+      vertical group dividers) and reserves 1px of top/bottom padding
+      (skin.css:6129). Both need overriding, and that skin rule ties this
+      selector on specificity, so `!important` is used. */
+.tox .tox-menubar + .tox-toolbar,
+.tox .tox-menubar + .tox-toolbar-overlord {
+  border-top-color: #d0d7de !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Remove the header's own vertical padding. The skin sets
+   `.tox:not(.tox-tinymce-inline) .tox-editor-header { padding: 4px 0 }`
+   (skin.css:131) which reserves 4px above the menu bar and 4px below the
+   toolbar. That skin selector is also specificity (0,3,0) — a tie with
+   `.tox .tox-editor-header` — and TinyMCE injects its skin CSS after ours, so
+   the tie goes to the skin. `!important` is required to win. */
+.tox .tox-editor-header {
+  padding: 0 !important;
+}
+
+/* Make the toolbar span the full header width. `.tox-editor-header` is a
+   2-column grid (`grid-template-columns: 1fr min-content`) and the theme always
+   renders an (empty) `.tox-promotion` cell in column 2 — even with
+   promotion:false its `padding-inline: 4px 8px` reserves 12px. The toolbar is
+   auto-placed into column 1 only, so its background and borders stopped 12px
+   short of the right edge. Spanning both columns lets the row dividers and the
+   footer line reach the end. */
+.tox .tox-editor-header .tox-toolbar {
+  grid-column: 1 / -1;
+}
+
+/* Menu bar on a narrow screen. Below 480px the skin pins the menubar to a
+   single sideways-scrolling line (skin.css:3275-3281 — `flex-wrap: nowrap;
+   overflow-x: auto`), which cuts the last menus off at the edge of the editor.
+   Let it wrap onto a second line instead so every menu stays reachable on a
+   phone. The skin selector is specificity (0,3,0); this one is (0,4,0), so it
+   wins even though TinyMCE injects the skin CSS after this file. `overflow-x`
+   and `overflow-y` have to be set together — a lone `visible` beside the
+   skin's `hidden` would be recomputed to `auto`. */
+@media only screen and (max-width: 480px) {
+  .tox:not(.tox-tinymce-inline) .tox-editor-header .tox-menubar {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    overflow-y: visible;
+  }
+}
+
+/* --- Track changes tab (page chrome only; marker styles live in
+   src/trackchanges/trackchanges.css and are injected into the iframe) --- */
+.tc-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.tc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.tc-field input {
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+}
+
+/* --- Track changes: comments panel --- */
+.tc-comments {
+  margin-top: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  background: #f8fafc;
+}
+
+.tc-comments h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+.tc-comments .tc-empty {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.tc-comments ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.tc-comments li {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.tc-comment-meta {
+  font-size: 12px;
+  color: #92400e;
+  font-weight: 600;
+}
+
+.tc-comment-body {
+  font-size: 13px;
+  color: #334155;
+  margin: 2px 0 6px;
+  white-space: pre-wrap;
+}

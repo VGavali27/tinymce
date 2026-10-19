@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Track changes — Phase 1 spike</title>
+<style>
+  body { font: 14px/1.5 system-ui, -apple-system, Segoe UI, sans-serif; margin: 24px; color: #0f172a; }
+  h1 { font-size: 18px; margin: 0 0 8px; }
+  h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: #334155; margin: 20px 0 6px; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; background: #f1f5f9; padding: 1px 5px; border-radius: 4px; }
+  .hint { color: #64748b; font-size: 13px; max-width: 900px; }
+  .row { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+  .col { flex: 1 1 420px; min-width: 340px; }
+  button { padding: 8px 14px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; cursor: pointer; font: inherit; }
+  button.primary { background: #2563eb; border-color: #2563eb; color: #fff; }
+  #report { white-space: pre-wrap; font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; background: #0f172a; color: #e2e8f0; border-radius: 8px; padding: 12px; max-height: 360px; overflow: auto; }
+  .pass { color: #86efac; }
+  .fail { color: #fca5a5; }
+  .info { color: #93c5fd; }
+</style>
+</head>
+<body>
+  <h1>Track changes — Phase 1 spike</h1>
+  <p class="hint">
+    Self-hosted TinyMCE 8.9.3. Two editors run the same round-trip:
+    <b>A</b> uses the <b>default</b> schema; <b>B</b> adds
+    <code>extended_valid_elements</code>. “Run checks” does a
+    <code>setContent</code> → <code>getContent</code> round-trip and reports
+    whether <code>ins</code> / <code>del</code> / <code>datetime</code> /
+    <code>data-*</code> survive serialization + <code>xss_sanitization</code>.
+  </p>
+  <p class="hint">
+    Then click into editor <b>B</b>, toggle <b>live interception</b> on, and
+    type or press Backspace: typed characters are wrapped in a green
+    <code>&lt;ins&gt;</code> (hover it), and deletions are suppressed. The
+    report logs every <code>beforeinput</code> so you can see the mechanism.
+  </p>
+  <p>
+    <button class="primary" id="run">Run checks</button>
+    <button id="toggle">Enable live interception (off)</button>
+  </p>
+
+  <div class="row">
+    <div class="col">
+      <h2>A · default schema</h2>
+      <textarea id="a"></textarea>
+    </div>
+    <div class="col">
+      <h2>B · extended_valid_elements</h2>
+      <textarea id="b"></textarea>
+    </div>
+  </div>
+
+  <h2>Report</h2>
+  <pre id="report"></pre>
+
+  <script src="/tinymce/tinymce.min.js"></script>
+  <script>
+    /* global tinymce */
+    // ------------------------------------------------------------------
+    // Phase 1 spike — throwaway. Answers two questions:
+    //   1. Does ins/del/datetime/data-* survive save+reload (serializer +
+    //      xss_sanitization), with and without extended_valid_elements?
+    //   2. Is beforeinput interception + caret placement viable?
+    // ------------------------------------------------------------------
+    const AUTHOR = 'Spike User';
+    const nowIso = () => new Date().toISOString();
+    const fmtTime = (iso) => iso.slice(0, 16).replace('T', ' ');
+    const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    let intercept = false;
+    let edA = null;
+    let edB = null;
+
+    // Styles live INSIDE the iframe (content_style), not on this page.
+    const CONTENT_STYLE = [
+      'body { font-family: system-ui, sans-serif; }',
+      'ins.tc-insert { color:#15803d; text-decoration:underline; text-decoration-color:#16a34a; }',
+      'del.tc-delete { color:#b91c1c; text-decoration:line-through; text-decoration-color:#dc2626; }',
+      'span.tc-comment { background:#fef08a; border-bottom:1px solid #eab308; cursor:help; }',
+      'ins.tc-insert, del.tc-delete, span.tc-comment { position:relative; }',
+      'ins.tc-insert:hover::after, del.tc-delete:hover::after, span.tc-comment:hover::after {',
+      '  content: attr(data-tooltip); position:absolute; left:0; bottom:100%; z-index:10;',
+      '  white-space:nowrap; background:#0f172a; color:#fff; font-size:11px; padding:3px 6px; border-radius:4px;',
+      '}',
+    ].join('\n');
+
+    const SAMPLE =
+      '<p>Hello ' +
+      '<ins class="tc-insert" datetime="2026-10-14T09:00:00.000Z" data-author="Vinod" ' +
+      'data-tooltip="Inserted by Vinod \u2013 2026-10-14 09:00">world</ins> ' +
+      '<del class="tc-delete" datetime="2026-10-14T09:01:00.000Z" data-author="Vinod" ' +
+      'data-tooltip="Deleted by Vinod \u2013 2026-10-14 09:01">old</del> ' +
+      '<span class="tc-comment" data-comment-id="c1" data-foo="bar" ' +
+      'data-tooltip="Comment by Vinod \u2013 2026-10-14 09:02: needs a source">note</span>' +
+      '</p>';
+
+    const CHECK_SPECS = [
+      ['ins element kept', /<ins\b/i],
+      ['ins datetime kept', /<ins\b[^>]*\bdatetime=/i],
+      ['ins data-author kept', /<ins\b[^>]*\bdata-author=/i],
+      ['ins class kept', /<ins\b[^>]*\bclass="tc-insert"/i],
+      ['del element kept', /<del\b/i],
+      ['del datetime kept', /<del\b[^>]*\bdatetime=/i],
+      ['del data-author kept', /<del\b[^>]*\bdata-author=/i],
+      ['comment span kept', /<span\b[^>]*\bclass="tc-comment"/i],
+      ['comment data-comment-id kept', /<span\b[^>]*\bdata-comment-id="c1"/i],
+      ['arbitrary data-* kept', /\bdata-foo="bar"/i],
+    ];
+
+    const reportEl = document.getElementById('report');
+    function log(kind, msg) {
+      const span = document.createElement('span');
+      span.className = kind;
+      span.textContent = msg + '\n';
+      reportEl.appendChild(span);
+      reportEl.scrollTop = reportEl.scrollHeight;
+    }
+    function clearReport() {
+      reportEl.textContent = '';
+    }
+
+    function runChecks() {
+      clearReport();
+      let allPass = true;
+      const editors = [
+        ['A (default schema)', edA],
+        ['B (extended_valid_elements)', edB],
+      ];
+      for (const [label, editor] of editors) {
+        log('info', '\n=== Editor ' + label + ' ===');
+        if (!editor) {
+          log('fail', '  editor not ready yet — wait a moment and retry');
+          allPass = false;
+          continue;
+        }
+        editor.setContent(SAMPLE);
+        const out = editor.getContent();
+        let ok = true;
+        for (const [name, re] of CHECK_SPECS) {
+          const pass = re.test(out);
+          ok = ok && pass;
+          log(pass ? 'pass' : 'fail', '  ' + (pass ? 'PASS' : 'FAIL') + '  ' + name);
+        }
+        log('info', '  getContent():\n  ' + out.replace(/\n/g, '\n  '));
+        allPass = allPass && ok;
+      }
+      log(
+        'info',
+        '\nVerdict: ' +
+          (allPass
+            ? 'all markup survives in BOTH editors — the default schema already keeps ins/del/datetime/data-*.'
+            : 'some markup was dropped (see FAILs above) — use extended_valid_elements as in editor B.')
+      );
+    }
+
+    function setupSpike(editor) {
+      // beforeinput is forwarded by TinyMCE (it is in the native-events map),
+      // and canceling it is what the core itself relies on for deletes.
+      editor.on('beforeinput', (e) => {
+        log('info', 'beforeinput: ' + e.inputType + (intercept ? '  [intercepting]' : ''));
+        if (!intercept) return;
+
+        if (e.inputType === 'insertText' && typeof e.data === 'string' && e.data.length > 0) {
+          e.preventDefault();
+          const iso = nowIso();
+          const html =
+            '<ins class="tc-insert" datetime="' + iso + '" data-author="' + esc(AUTHOR) + '" ' +
+            'data-tooltip="Inserted by ' + esc(AUTHOR) + ' \u2013 ' + fmtTime(iso) + '">' +
+            esc(e.data) +
+            '</ins>';
+          editor.insertContent(html);
+        } else if (typeof e.inputType === 'string' && e.inputType.indexOf('delete') === 0) {
+          e.preventDefault();
+          log('info', '  deletion suppressed (Phase 2 will wrap the target in <del>)');
+        }
+      });
+    }
+
+    const shared = {
+      base_url: '/tinymce',
+      suffix: '.min',
+      license_key: 'gpl',
+      height: 220,
+      menubar: false,
+      plugins: 'code',
+      toolbar: 'undo redo | bold italic | code',
+      promotion: false,
+      branding: false,
+      xss_sanitization: true,
+      content_style: CONTENT_STYLE,
+      setup: setupSpike,
+    };
+
+    tinymce.init(Object.assign({}, shared, {
+      selector: '#a',
+      init_instance_callback: (ed) => { edA = ed; },
+    }));
+    tinymce.init(Object.assign({}, shared, {
+      selector: '#b',
+      extended_valid_elements:
+        'ins[datetime|data-author|data-tooltip|class],' +
+        'del[datetime|data-author|data-tooltip|class],' +
+        'span[data-comment-id|data-tooltip|data-foo|class],' +
+        'time[datetime]',
+      init_instance_callback: (ed) => { edB = ed; },
+    }));
+
+    document.getElementById('run').addEventListener('click', runChecks);
+    const toggleBtn = document.getElementById('toggle');
+    toggleBtn.addEventListener('click', () => {
+      intercept = !intercept;
+      toggleBtn.textContent = 'Enable live interception (' + (intercept ? 'ON' : 'off') + ')';
+      toggleBtn.classList.toggle('primary', intercept);
+    });
+  </script>
+</body>
+</html>

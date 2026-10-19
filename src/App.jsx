@@ -2,16 +2,20 @@ import { useState } from 'react';
 import AddBlog from './AddBlog.jsx';
 import EditorDemo from './EditorDemo.jsx';
 import EditorFull from './EditorFull.jsx';
+import EditorTrackChanges from './EditorTrackChanges.jsx';
 import OptionsReference from './OptionsReference.jsx';
+import Playground from './Playground.jsx';
 import PluginsReference from './PluginsReference.jsx';
 import './App.css';
 
 const TABS = [
   { id: 'blog', label: 'Add blog' },
+  { id: 'track', label: 'Track changes' },
   { id: 'options', label: 'All options' },
   { id: 'plugins', label: 'Plugins' },
   { id: 'full', label: 'Full editor (all free plugins)' },
   { id: 'editor', label: 'Default editor' },
+  { id: 'playground', label: 'Playground' },
 ];
 
 export default function App() {
@@ -38,10 +42,12 @@ export default function App() {
 
       <main className="panel">
         {tab === 'blog' && <AddBlog />}
+        {tab === 'track' && <EditorTrackChanges />}
         {tab === 'options' && <OptionsReference />}
         {tab === 'plugins' && <PluginsReference />}
         {tab === 'full' && <EditorFull />}
         {tab === 'editor' && <EditorDemo />}
+        {tab === 'playground' && <Playground />}
       </main>
     </div>
   );

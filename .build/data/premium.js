@@ -1,0 +1,36 @@
+// Premium TinyMCE features/plugins that are NOT part of the free self-hosted
+// `tinymce` npm package. These require a paid Tiny Cloud plan or a commercial
+// self-hosted license. Listed here so it is clear what you get for free.
+
+export const PREMIUM = [
+  { name: 'a11ychecker', desc: 'Accessibility Checker (WCAG compliance).' },
+  { name: 'advcode', desc: 'Enhanced Code Editor.' },
+  { name: 'advtable', desc: 'Enhanced Tables (sorting, advanced functionality).' },
+  { name: 'ai', desc: 'TinyMCE AI (chat, rewrites, quality checks).' },
+  { name: 'casechange', desc: 'Case Change (title/UPPER/lower).' },
+  { name: 'checklist', desc: 'Checklists.' },
+  { name: 'comments', desc: 'Comments and threaded collaboration.' },
+  { name: 'editimage', desc: 'Image Editing (crop, rotate, filters).' },
+  { name: 'export', desc: 'Export to PDF / Word.' },
+  { name: 'footnotes', desc: 'Footnotes.' },
+  { name: 'formatpainter', desc: 'Format Painter.' },
+  { name: 'fullpage', desc: 'Full Page HTML document editing.' },
+  { name: 'importword', desc: 'Import from Word.' },
+  { name: 'inlinecss', desc: 'Inline CSS (email-ready output).' },
+  { name: 'linkchecker', desc: 'Link Checker.' },
+  { name: 'markdown', desc: 'Markdown input/output.' },
+  { name: 'math', desc: 'Math Equations.' },
+  { name: 'mediaembed', desc: 'Enhanced Media Embed.' },
+  { name: 'mediaoptimizer', desc: 'Media Optimizer (Uploadcare).' },
+  { name: 'mentions', desc: '@Mentions.' },
+  { name: 'merge-tags', desc: 'Merge Tags.' },
+  { name: 'pageembed', desc: 'Page Embed.' },
+  { name: 'permanentpen', desc: 'Permanent Pen.' },
+  { name: 'powerpaste', desc: 'PowerPaste (high-fidelity Word/Docs paste).' },
+  { name: 'revisionhistory', desc: 'Revision History.' },
+  { name: 'suggestededits', desc: 'Suggested Edits.' },
+  { name: 'tableofcontents', desc: 'Table of Contents.' },
+  { name: 'templates', desc: 'Templates.' },
+  { name: 'tinymcespellchecker', desc: 'Spell Checker (multilingual, custom dictionaries).' },
+  { name: 'typography', desc: 'Advanced Typography.' },
+];

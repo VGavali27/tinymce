@@ -6,7 +6,7 @@
 // layout.
 import { useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-import { BLOG_INIT, TINYMCE_SRC } from './tinymce.config.js';
+import { INIT, TINYMCE_SRC } from './tinymce.config.js';
 import './tinymce.overrides.css';
 
 export default function BlogEditor() {
@@ -19,7 +19,7 @@ export default function BlogEditor() {
       tinymceScriptSrc={TINYMCE_SRC}
       // Self-hosted use under GPLv2+ is free; this silences the license prompt.
       licenseKey="gpl"
-      init={BLOG_INIT}
+      init={INIT}
       initialValue="<p>Write your blog post here…</p>"
       onInit={(_evt, editor) => {
         editorRef.current = editor;

@@ -1,0 +1,42 @@
+/* ---------------------------------------------------------------------------
+   Track changes — content styles (loaded INSIDE the editor iframe).
+
+   This file styles the editable body only. Load it with `content_css`
+   (a served URL) or `content_style` (this file's text). It is deliberately
+   React-free and dependency-free so it can be copied into any project.
+
+   Markers carry their hover text in `data-tooltip`; the core renders it as a
+   shared `.tc-tooltip` element in the host page (see trackchanges.js). TinyMCE
+   keeps `data-*` attributes by default.
+
+   NOTE: use only CSS comments here (slash-star). `//` is not valid CSS and
+   silently kills the rule that follows it.
+   --------------------------------------------------------------------------- */
+
+ins.tc-insert {
+  color: #15803d;
+  text-decoration: underline;
+  text-decoration-color: #16a34a;
+  background: rgba(22, 163, 74, 0.1);
+}
+
+del.tc-delete {
+  color: #b91c1c;
+  text-decoration: line-through;
+  text-decoration-color: #dc2626;
+  background: rgba(220, 38, 38, 0.1);
+}
+
+span.tc-comment {
+  /* Opaque highlight. This is safe because the markers are deliberately NOT
+     positioned (see below): Chrome paints a positioned inline box's background
+     over the text caret, which made the caret invisible inside comments. */
+  background: #fef08a;
+  border-bottom: 1px solid #eab308;
+}
+
+/* All three markers share the editor's normal text cursor and stay in the
+   normal flow (no `position: relative`), so the text caret is painted above the
+   marker background and stays visible. The hover tooltip is rendered by the
+   core (trackchanges.js) as a real element rather than a CSS ::after, so
+   nothing here needs to be positioned. */

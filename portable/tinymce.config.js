@@ -1,6 +1,6 @@
 // ---------------------------------------------------------------------------
 // Portable TinyMCE 8 configuration (self-hosted, GPL licensed).
-// Copy this file into another project as-is and pass BLOG_INIT to the editor.
+// Copy this file into another project as-is and pass INIT to the editor.
 // ---------------------------------------------------------------------------
 // Requirements in the target project:
 //   npm i tinymce @tinymce/tinymce-react      (runtime)
@@ -43,7 +43,7 @@ const imagesUploadHandler = (blobInfo) =>
 // casechange, formatpainter, linkchecker, mentions, …) are absent: they are not
 // part of the free `tinymce` package. See src/data/premium.js in the source
 // repo for the full list.
-export const BLOG_PLUGINS = [
+export const PLUGINS = [
   'accordion', 'advlist', 'anchor', 'autolink', 'autosave',
   'charmap', 'code', 'codesample', 'directionality', 'emoticons', 'fullscreen',
   'help', 'image', 'importcss', 'insertdatetime', 'link', 'lists', 'media',
@@ -59,7 +59,7 @@ export const BLOG_PLUGINS = [
 // IMPORTANT: it must stay a SINGLE string. If you pass an array instead,
 // TinyMCE renders one .tox-toolbar per entry (inside .tox-toolbar-overlord) and
 // the row-divider CSS in tinymce.overrides.css no longer applies.
-export const BLOG_TOOLBAR = [
+export const TOOLBAR = [
   'undo redo',
   'bold italic underline strikethrough',
   'blocks fontfamily',
@@ -77,15 +77,15 @@ export const BLOG_TOOLBAR = [
   'save fullscreen preview',
 ].join('|');
 
-export const BLOG_INIT = {
+export const INIT = {
   // Sizing
   height: 500,
   resize: true,
 
   // Bar / toolbar
   menubar: 'file edit view insert format tools table help',
-  plugins: BLOG_PLUGINS,
-  toolbar: BLOG_TOOLBAR,
+  plugins: PLUGINS,
+  toolbar: TOOLBAR,
   // 'wrap' keeps every button visible and wraps onto extra rows
   // (instead of 'sliding', which hides extras behind a "…" button).
   toolbar_mode: 'wrap',

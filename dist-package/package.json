@@ -1,0 +1,34 @@
+﻿{
+  "name": "@your-scope/tinymce-trackchanges",
+  "version": "1.0.0",
+  "description": "Reusable TinyMCE track changes config and core (self-hosted)",
+  "type": "module",
+  "main": "./trackchanges.cjs.js",
+  "module": "./trackchanges.esm.js",
+  "exports": {
+    ".": {
+      "import": "./trackchanges.esm.js",
+      "require": "./trackchanges.cjs.js"
+    },
+    "./editor-config": {
+      "import": "./editorConfig.esm.js",
+      "require": "./editorConfig.cjs.js"
+    },
+    "./track-changes-options": {
+      "import": "./trackChangesOptions.esm.js",
+      "require": "./trackChangesOptions.cjs.js"
+    },
+    "./all": {
+      "import": "./tinymce-trackchanges.esm.js"
+    }
+  },
+  "files": [
+    "*.js",
+    "*.js.map"
+  ],
+  "peerDependencies": {
+    "@tinymce/tinymce-react": ">=4.0.0",
+    "react": ">=18.0.0",
+    "tinymce": ">=8.0.0"
+  }
+}
